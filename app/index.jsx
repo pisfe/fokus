@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
+import { ActionButton } from "../components/ActionButton";
+import { FokusButton } from "../components/FokusButton/";
+import { Timer } from "../components/Timer/";
 
 const pomodoro = [
   {
@@ -36,26 +39,16 @@ export default function Index() {
       <View style={styles.actions}>
         <View style={styles.context}>
           {pomodoro.map(p => (
-            <Pressable 
+            <ActionButton 
               key={p.id} 
-              style={timerType.id === p.id ? styles.contextButtonActive : null}
-              onPress={() => {setTimerType(p)
-                
-              }}>
-              <Text style={styles.contextButtonText}>
-                {p.display}
-              </Text>
-            </Pressable>
+              active={timerType.id === p.id}
+              onPress={() => setTimerType(p)}
+              display={p.display}
+            ></ActionButton>
           ))}
         </View>
-        <Text style={styles.timer}>
-          {new Date(timerType.initialValue * 1000).toLocaleTimeString('pt-BR', {minute: '2-digit', second: '2-digit'})}
-        </Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>
-            Começar
-          </Text>
-        </Pressable>
+        <Timer totalSeconds={timerType.initialValue}></Timer>
+        <FokusButton></FokusButton>
       </View>
       
     </View>
@@ -80,22 +73,6 @@ const styles = StyleSheet.create({
     borderColor: "#144480",
     gap: 32
   },
-  timer: {
-    fontSize: 54,
-    color: '#FFF',
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  button: {
-    backgroundColor: '#B872FF',
-    borderRadius: 32,
-    padding: 10,
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#021123',
-    fontSize: 18
-  },
   footer: {
     width: '80%',
   },
@@ -108,14 +85,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center'
-  },
-  contextButtonText: {
-    fontSize: 11,
-    color: '#FFF',
-    padding: 8
-  },
-  contextButtonActive: {
-    backgroundColor: '#144480',
-    borderRadius: 8
-  },
+  }
 })
